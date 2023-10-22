@@ -143,7 +143,7 @@
             android:textSize="18sp" />
 
         <Switch
-            android:id="@+id/waterTankMode"
+            android:id="@+id/waterLevelSwitch"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:layout_margin="0dp"
@@ -193,7 +193,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/linear3"
         android:layout_width="370dp"
         android:layout_height="200dp"
@@ -218,11 +218,37 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+    </LinearLayout>-->
 
+    <Button
+        android:id="@+id/insertBttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@color/white"
+        android:text="@string/insert_number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear2"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
 
-
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/viewBttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="68dp"
+        android:background="@color/white"
+        android:text="@string/view_data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insertBttn"
+        app:layout_constraintVertical_bias="0.364"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
