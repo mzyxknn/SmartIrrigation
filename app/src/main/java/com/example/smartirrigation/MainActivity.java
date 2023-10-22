@@ -33,7 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     //SWITCHES
-    private Switch water_switch, servo_switch;
+    private Switch water_switch, servo_switch, textSwitch;
 
     private Button insert, view;
 
@@ -78,9 +78,13 @@ public class MainActivity extends AppCompatActivity {
         pumpCommand = FirebaseDatabase.getInstance().getReference("WaterPump");
         servoGateCommand = FirebaseDatabase.getInstance().getReference("ServoGate");
 
+        //Status
+        TextView statusTextView = findViewById(R.id.status);
+
         //switch
         water_switch = findViewById(R.id.waterLevelSwitch);
         servo_switch = findViewById(R.id.servoSwitch);
+        textSwitch = findViewById(R.id.textSwitch);
 
         // Initialize the animators
         waterLevelAnimator = new ValueAnimator();
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Water");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Water Sensor");
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -123,9 +127,61 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //FETCH STATUS
+
+        // Reference to the Firebase Realtime Database node "Status"
+        DatabaseReference statusReference = FirebaseDatabase.getInstance().getReference("Status");
+
+        statusReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Retrieve the status data from Firebase
+                String status = dataSnapshot.getValue(String.class);
+
+                // Update the status TextView with the retrieved data
+                if (status != null) {
+                    statusTextView.setText(status);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error, if needed
+            }
+        });
+
+        //TEXT STATE
+        // Reference to the Firebase Realtime Database node "TextMessaging"
+        DatabaseReference textMessagingReference = FirebaseDatabase.getInstance().getReference("TextMessaging");
+
+        textSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Define the value to be stored in the Firebase database based on the switch state
+                String textState = isChecked ? "Text_On" : "Text_Off";
+
+                // Update the "TextMessaging" node in the Firebase Realtime Database
+                textMessagingReference.setValue(textState)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Switch Debug", "Text Switch Status Updated: " + textState);
+                                Toast.makeText(MainActivity.this, "Text Switch Status Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("Firebase Error", "Failed to update Text Switch Status", e);
+                                Toast.makeText(MainActivity.this, "Failed to update Text Switch Status", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+
         // WATER PUMP
-
-
 
         water_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

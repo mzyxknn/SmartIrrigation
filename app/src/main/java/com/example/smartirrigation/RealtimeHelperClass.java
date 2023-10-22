@@ -2,7 +2,6 @@ package com.example.smartirrigation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,36 +13,34 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class RealtimeHelperClass extends ArrayAdapter {
-
-    private TextView recipientName,phoneNumber;
+public class RealtimeHelperClass extends ArrayAdapter<String> {
+    private TextView phoneNumber, idNumber;
     private Activity mContext;
-    List<PhoneNumber> phoneList;
+    List<String> phoneList;
+    List<String> idList; // Add a list to store the IDs
 
-    public RealtimeHelperClass(Activity mContext, List<PhoneNumber> phoneList){
-        super(mContext,R.layout.phonenum_list,phoneList);
+    public RealtimeHelperClass(Activity mContext, List<String> idList, List<String> phoneList) {
+        super(mContext, R.layout.phonenum_list, phoneList);
         this.mContext = mContext;
+        this.idList = idList; // Initialize the ID list
         this.phoneList = phoneList;
     }
-
 
     @SuppressLint("MissingInflatedId")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         LayoutInflater inflater = mContext.getLayoutInflater();
-        View listItemView = inflater.inflate(R.layout.phonenum_list,null,true);
+        View listItemView = inflater.inflate(R.layout.phonenum_list, null, true);
 
-        recipientName = listItemView.findViewById(R.id.recipientname);
         phoneNumber = listItemView.findViewById(R.id.phonenumber);
+        idNumber = listItemView.findViewById(R.id.idnumber);
 
+        String phoneNumberText = phoneList.get(position);
+        String idText = idList.get(position); // Get the corresponding ID
 
-        PhoneNumber phonenum = phoneList.get(position);
-
-        recipientName.setText(phonenum.getName());
-        phoneNumber.setText(phonenum.getPhoneNum());
-
+        phoneNumber.setText(phoneNumberText);
+        idNumber.setText(idText);
 
         return listItemView;
     }

@@ -29,7 +29,8 @@ import java.util.List;
 public class ViewData extends AppCompatActivity {
 
     ListView myListview;
-    List<PhoneNumber> phoneList;
+    List<String> phoneList; // Modified to store phone numbers as strings
+    List<String> idList; // Added to store ID numbers
 
     DatabaseReference phoneNumRef;
 
@@ -40,57 +41,58 @@ public class ViewData extends AppCompatActivity {
 
         myListview = findViewById(R.id.myListView);
         phoneList = new ArrayList<>();
+        idList = new ArrayList<>(); // Initialize the ID list
 
-        phoneNumRef = FirebaseDatabase.getInstance().getReference("Phone Numbers");
+        phoneNumRef = FirebaseDatabase.getInstance().getReference("Text").child("MobileNumbers");
         phoneNumRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 phoneList.clear();
+                idList.clear();
 
-                for (DataSnapshot studentDatasnap : dataSnapshot.getChildren()){
-                    PhoneNumber phonenum = studentDatasnap.getValue(PhoneNumber.class);
-                    phoneList.add(phonenum);
+                for (DataSnapshot phoneDataSnapshot : dataSnapshot.getChildren()){
+                    String phoneNumber = phoneDataSnapshot.getValue(String.class);
+                    String id = phoneDataSnapshot.getKey(); // Get the ID
+
+                    phoneList.add(phoneNumber);
+                    idList.add(id);
                 }
 
-                ListAdapter adapter = new RealtimeHelperClass(ViewData.this,phoneList);
+                ListAdapter adapter = new RealtimeHelperClass(ViewData.this, idList, phoneList);
                 myListview.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // Handle database errors if needed
             }
         });
 
-        //set itemLong listener on listview item
-
+        // Set itemLong listener on listview item
         myListview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                PhoneNumber phonenum = phoneList.get(position);
-                showUpdateDialog(phonenum.getId(), phonenum.getName());
-
+                String phoneNumber = phoneList.get(position);
+                String firebaseId = idList.get(position); // Get the Firebase-generated key
+                showUpdateDialog(firebaseId, phoneNumber); // Pass the Firebase-generated key
                 return false;
             }
         });
+
+
     }
 
-    private void showUpdateDialog(final String id, String name){
-
+    private void showUpdateDialog(final String id, String phoneNumber) {
         final AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View mDialogView = inflater.inflate(R.layout.dialog_update, null);
-
         mDialog.setView(mDialogView);
 
-        //create views refernces
-        final EditText updateRecipientName = mDialogView.findViewById(R.id.updateRecipient);
         final EditText updatePhoneNumber = mDialogView.findViewById(R.id.updateNumber);
         Button btnUpdate = mDialogView.findViewById(R.id.updateBttn);
         Button btnDelete = mDialogView.findViewById(R.id.deleteBttn);
 
-        mDialog.setTitle("Updating " + name +" record");
+        mDialog.setTitle("Updating " + phoneNumber + " record");
 
         final AlertDialog alertDialog = mDialog.create();
         alertDialog.show();
@@ -98,42 +100,32 @@ public class ViewData extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //here we will update data in database
-                //now get values from view
-
-                String newName = updateRecipientName.getText().toString();
                 String newPhoneNum = updatePhoneNumber.getText().toString();
-
-
-                updateData(id,newName,newPhoneNum);
-
+                updateData(id, newPhoneNum);
                 Toast.makeText(ViewData.this, "Record Updated", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }
-
         });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteRecord(id);
-
                 alertDialog.dismiss();
             }
         });
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void deleteRecord(String id){
-        //create reference to database
-        DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Phone Numbers").child(id);
-        //we referencing child here because we will be delete one record not whole data data in database
-        //we will use generic Task here so lets do it..
+    private void deleteRecord(String id) {
+        // Create a reference to the database
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Text").child("MobileNumbers");
 
-        Task<Void> mTask = DbRef.removeValue();
+        // Use the provided ID to delete the corresponding record
+        Task<Void> mTask = dbRef.child(id).removeValue();
         mTask.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -141,17 +133,27 @@ public class ViewData extends AppCompatActivity {
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(Exception e) {
                 showToast("Error deleting record");
             }
         });
     }
 
-    private void updateData(String id, String name, String rollno){
+    private void updateData(String id, String phoneNumber) {
+        // Create a reference to the database
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Text").child("MobileNumbers").child(id);
 
-        //creating database reference
-        DatabaseReference DbRef = FirebaseDatabase.getInstance().getReference("Phone Numbers").child(id);
-        PhoneNumber phonenum = new PhoneNumber(id, name, rollno);
-        DbRef.setValue(phonenum);
+        // Update the phone number
+        dbRef.setValue(phoneNumber).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                showToast("Record Updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                showToast("Error updating record");
+            }
+        });
     }
 }

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <EditText
+    <!--<EditText
         android:id="@+id/updateRecipient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="New Recipient Name" />
+        android:hint="New Recipient Name"
+        android:inputType="textPersonName" />-->
 
     <EditText
         android:id="@+id/updateNumber"

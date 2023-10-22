@@ -26,6 +26,22 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
+    <!-- <EditText
+         android:id="@+id/recipient"
+         android:layout_width="350dp"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="144dp"
+         android:backgroundTint="@color/black"
+         android:hint="Enter name of Recipient"
+         android:textColor="@color/black"
+         android:textColorHint="@color/black"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.491"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/Head" />-->
+
+
+
     <Button
         android:id="@+id/btnInsertData"
         android:layout_width="200dp"
@@ -37,34 +53,20 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/number"
-        app:layout_constraintVertical_bias="0.15" />
-
-    <EditText
-        android:id="@+id/recipient"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:backgroundTint="@color/black"
-        android:hint="Enter name of Recipient"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Head" />
+        app:layout_constraintVertical_bias="0.098" />
 
     <EditText
         android:id="@+id/number"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="140dp"
         android:backgroundTint="@color/black"
         android:hint="Enter phone number"
-        android:textColorHint="@color/black"
         android:textColor="@color/black"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipient" />
+        app:layout_constraintTop_toBottomOf="@+id/Head" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
