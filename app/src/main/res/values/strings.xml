@@ -2,4 +2,9 @@
     <string name="app_name">Smart Irrigation</string>
     <string name="view_data">View Data</string>
     <string name="insert_number">Insert Number</string>
+
+<!--navigation-->
+    <string name="home">Home</string>
+    <string name="text">Insert</string>
+    <string name="group">View</string>
 </resources>

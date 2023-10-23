@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
     //SWITCHES
     private Switch water_switch, servo_switch, textSwitch;
 
-    private Button insert, view;
+    //NAVIGATION
+    BottomNavigationView nav;
+
+
+    //private Button insert, view;
 
     private DatabaseReference pumpCommand,servoGateCommand;
 
@@ -67,23 +73,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Navigation
+        nav = findViewById(R.id.nav);
+        nav.setSelectedItemId(R.id.home_);
+
         //Buttons
-        insert = findViewById(R.id.insertBttn);
-        view = findViewById(R.id.viewBttn);
+        //insert = findViewById(R.id.insertBttn);
+        //view = findViewById(R.id.viewBttn);
 
         waterLevel = findViewById(R.id.realtime_waterLevel);
         water_progressBar = findViewById(R.id.water_level);
 
         //Storage
         pumpCommand = FirebaseDatabase.getInstance().getReference("WaterPump");
-        servoGateCommand = FirebaseDatabase.getInstance().getReference("ServoGate");
+        //servoGateCommand = FirebaseDatabase.getInstance().getReference("ServoGate");
 
         //Status
         TextView statusTextView = findViewById(R.id.status);
 
         //switch
         water_switch = findViewById(R.id.waterLevelSwitch);
-        servo_switch = findViewById(R.id.servoSwitch);
+        //servo_switch = findViewById(R.id.servoSwitch);
         textSwitch = findViewById(R.id.textSwitch);
 
         // Initialize the animators
@@ -99,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Water Sensor");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Water");
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("FirebaseDebug", "DataSnapshot: " + snapshot);
 
-                Long realtimeWater = snapshot.child("WaterLevel").getValue(Long.class);
+                Long realtimeWater = snapshot.getValue(Long.class);
                 Log.d("FirebaseDebug", "realtimeWater: " + realtimeWater);
                 if (realtimeWater != null) {
                     waterLevel.setText(String.valueOf(realtimeWater) + "%");
@@ -153,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TEXT STATE
         // Reference to the Firebase Realtime Database node "TextMessaging"
-        DatabaseReference textMessagingReference = FirebaseDatabase.getInstance().getReference("TextMessaging");
+        DatabaseReference textMessagingReference = FirebaseDatabase.getInstance().getReference("TextMessage");
 
         textSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -182,14 +192,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         // WATER PUMP
-
+        DatabaseReference waterPumpReference = FirebaseDatabase.getInstance().getReference("WaterPump");
         water_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String pumpState = isChecked ? "Pump_On" : "Pump_Off";
                 Log.d("Switch Debug", "water_switch is checked: " + isChecked);
                 Log.d("Switch Debug", "Updating Firebase with state: " + pumpState);
-                pumpCommand.child("Mode").setValue(pumpState)
+                waterPumpReference.setValue(pumpState)
 
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -208,9 +218,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         //WATER SERVO SWITCH
 
-
+        /*
         servo_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -229,9 +241,12 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
             }
-        });
+        });*/
+
 
         // Set an OnClickListener for the Insert Bttn
+
+        /*
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,6 +267,29 @@ public class MainActivity extends AppCompatActivity {
 
                 // Start the new activity
                 startActivity(intent);
+            }
+        });*/
+
+        //NAVIGATION
+        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_:
+                        return true;
+                    case R.id.text_:
+                        startActivity(new Intent(getApplicationContext(),InsertNumber.class));
+                        finish();
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.group_:
+                        startActivity(new Intent(getApplicationContext(), ViewData.class));
+                        finish();
+                        overridePendingTransition(0,0);
+                        return true;
+
+                }
+                return false;
             }
         });
 

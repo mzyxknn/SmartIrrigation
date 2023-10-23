@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,20 +32,50 @@ import java.util.List;
 
 public class ViewData extends AppCompatActivity {
 
+    BottomNavigationView nav;
+
     ListView myListview;
     List<String> phoneList; // Modified to store phone numbers as strings
     List<String> idList; // Added to store ID numbers
 
     DatabaseReference phoneNumRef;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_data);
 
+        //Navigation
+        nav = findViewById(R.id.nav);
+        nav.setSelectedItemId(R.id.group_);
+
         myListview = findViewById(R.id.myListView);
         phoneList = new ArrayList<>();
         idList = new ArrayList<>(); // Initialize the ID list
+
+        //NAVIGATION
+        nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        finish();
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.text_:
+                        startActivity(new Intent(getApplicationContext(), InsertNumber.class));
+                        finish();
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.group_:
+                        return true;
+
+                }
+                return false;
+            }
+        });
 
         phoneNumRef = FirebaseDatabase.getInstance().getReference("Text").child("MobileNumbers");
         phoneNumRef.addValueEventListener(new ValueEventListener() {
@@ -114,6 +148,7 @@ public class ViewData extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
+
     }
 
     private void showToast(String message) {

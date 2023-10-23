@@ -28,10 +28,10 @@
 
     <FrameLayout
         android:id="@+id/waterLayout"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-100dp"
+        android:layout_marginTop="0dp"
 
         android:layout_marginBottom="370dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -79,82 +79,7 @@
             android:textStyle="bold" />
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/highLow"
-        android:layout_width="170dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/container"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/waterLayout">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:text="Status"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Water level is high: 30.0"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear1"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/container"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highLow">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="100dp"
-            android:text="Water Pump"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
-
-        <Switch
-            android:id="@+id/waterLevelSwitch"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_margin="0dp"
-            android:scaleX="1.2"
-            android:scaleY="1.2"
-            android:thumb="@drawable/ic_thumb"
-            android:track="@drawable/bg_track"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-    </LinearLayout>
-
+    <!--
     <LinearLayout
         android:id="@+id/linear2"
         android:layout_width="370dp"
@@ -193,7 +118,7 @@
 
     </LinearLayout>
 
-    <!--<LinearLayout
+    <LinearLayout
         android:id="@+id/linear3"
         android:layout_width="370dp"
         android:layout_height="200dp"
@@ -220,19 +145,127 @@
 
     </LinearLayout>-->
 
+    <!--
+    <Button
+        android:id="@+id/insertBttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:text="@string/insert_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear3"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/viewBttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:background="@color/white"
+        android:text="@string/view_data"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insertBttn"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />-->
+
+
     <LinearLayout
-        android:id="@+id/linear3"
+        android:id="@+id/highLow"
+        android:layout_width="170dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/container"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/waterLayout">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="Status"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Water level is high: 30.0"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear1"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/container"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear2">
+        app:layout_constraintTop_toBottomOf="@+id/highLow">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="100dp"
+            android:text="Water Pump"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <Switch
+            android:id="@+id/waterLevelSwitch"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:thumb="@drawable/ic_thumb"
+            android:track="@drawable/bg_track"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/container"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear1"
+        app:layout_constraintVertical_bias="0.173">
 
         <TextView
             android:layout_width="100dp"
@@ -258,33 +291,18 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/insertBttn"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:background="@color/white"
-        android:text="@string/insert_number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear3"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/viewBttn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:background="@color/white"
-        android:text="@string/view_data"
+        android:layout_alignParentBottom="true"
+        android:background="@color/blue"
+        app:itemIconTint="@drawable/icon_color"
+        app:itemTextColor="@drawable/icon_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/insertBttn"
-        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/menu_bar"
         tools:ignore="MissingConstraints" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@
         android:text="ID"
         android:gravity="center"
         android:textSize="24sp"
-        android:textColor="#000000"/>
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/phonenumber"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="100dp"
         android:text="Phone Number"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
 
