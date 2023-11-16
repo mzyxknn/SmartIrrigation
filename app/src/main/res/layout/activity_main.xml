@@ -179,7 +179,7 @@
         android:id="@+id/highLow"
         android:layout_width="170dp"
         android:layout_height="70dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/container"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -213,11 +213,12 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/linear1"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/container"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
@@ -251,11 +252,12 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/linear2"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="-5dp"
         android:background="@drawable/container"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
@@ -265,7 +267,7 @@
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear1"
-        app:layout_constraintVertical_bias="0.173">
+        app:layout_constraintVertical_bias="0.088">
 
         <TextView
             android:layout_width="100dp"
@@ -291,6 +293,82 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-15dp"
+        android:background="@drawable/container"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear2"
+        app:layout_constraintVertical_bias="0.244">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="100dp"
+            android:text="Servo Mode"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <Switch
+            android:id="@+id/servoSwitch"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:thumb="@drawable/ic_thumb"
+            android:track="@drawable/bg_track"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear3"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/full_close_button"
+            android:layout_width="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Full Close" />
+
+        <Button
+            android:id="@+id/half_open_button"
+            android:layout_width="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Half Open" />
+
+        <Button
+            android:id="@+id/full_open_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Full Open" />
+
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav"
         android:layout_width="match_parent"
@@ -304,5 +382,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bar"
         tools:ignore="MissingConstraints" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     //SWITCHES
     private Switch water_switch, servo_switch, textSwitch;
 
+    private Button fullCloseButton, halfOpenButton,fullOpenButton;
+
     //NAVIGATION
     BottomNavigationView nav;
 
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         //switch
         water_switch = findViewById(R.id.waterLevelSwitch);
-        //servo_switch = findViewById(R.id.servoSwitch);
+        servo_switch = findViewById(R.id.servoSwitch);
         textSwitch = findViewById(R.id.textSwitch);
 
         // Initialize the animators
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Water");
+        databaseReference = FirebaseDatabase.getInstance().getReference("WaterLevel");
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -138,8 +140,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //FETCH STATUS
+        //FETCH STATUS DEPENDING ON MODE
 
+        DatabaseReference servoModeReference = FirebaseDatabase.getInstance().getReference("ServoGate");
+
+        servoModeReference.child("Mode").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String mode = dataSnapshot.getValue(String.class);
+
+                if (mode != null) {
+                    if (mode.equals("Automatic")) {
+                        // Reference to the Firebase Realtime Database node "Status"
+                        DatabaseReference statusReference = FirebaseDatabase.getInstance().getReference("ServoGate").child("Status");
+
+                        statusReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // Retrieve the status data from Firebase
+                                String status = dataSnapshot.getValue(String.class);
+
+                                // Update the status TextView with the retrieved data
+                                if (status != null) {
+                                    statusTextView.setText(status);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle database error, if needed
+                            }
+                        });
+                    } else if (mode.equals("Manual")) {
+                        // Reference to the Firebase Realtime Database node "ManualGate"
+                        DatabaseReference manualGateReference = FirebaseDatabase.getInstance().getReference("ServoGate").child("ManualGate");
+
+                        manualGateReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                // Retrieve the data from ManualGate node
+                                // Adjust this section based on the structure of your ManualGate node
+                                // For example, fetching Full Close data
+                                //String fullCloseData = dataSnapshot.child("FullClose").getValue(String.class);
+                                String fullCloseData = dataSnapshot.getValue(String.class);
+                                // Update the status TextView with the retrieved data
+                                if (fullCloseData != null) {
+                                    statusTextView.setText(fullCloseData);
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                // Handle database error, if needed
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error, if needed
+            }
+        });
+
+
+        /*
         // Reference to the Firebase Realtime Database node "Status"
         DatabaseReference statusReference = FirebaseDatabase.getInstance().getReference("Status");
 
@@ -159,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle database error, if needed
             }
-        });
+        });*/
 
         //TEXT STATE
         // Reference to the Firebase Realtime Database node "TextMessaging"
@@ -217,6 +284,104 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         });
+
+        /*
+        // SERVO GATE
+        DatabaseReference servoGateReference = FirebaseDatabase.getInstance().getReference("ServoGate");
+        servo_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String pumpState = isChecked ? "Pump_On" : "Pump_Off";
+                Log.d("Switch Debug", "water_switch is checked: " + isChecked);
+                Log.d("Switch Debug", "Updating Firebase with state: " + pumpState);
+                servoGateReference.setValue(pumpState)
+
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Firebase Debug", "Servo Gate Updated");
+                                Toast.makeText(MainActivity.this, "Servo Gate Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("Firebase Error", "Failed to update Pump Status", e);
+                                Toast.makeText(MainActivity.this, "Failed to update Pump Status", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });*/
+
+
+        DatabaseReference servoGateReference = FirebaseDatabase.getInstance().getReference("ServoGate");
+        //Switch modeSwitch = findViewById(R.id.servo_switch); // Replace R.id.mode_switch with your actual switch ID
+
+// Buttons for manual control
+        fullCloseButton = findViewById(R.id.full_close_button);
+        halfOpenButton = findViewById(R.id.half_open_button);
+        fullOpenButton = findViewById(R.id.full_open_button);
+
+
+
+        servo_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    servoGateReference.child("Status").setValue("");
+                    // Automatic mode - Disable manual buttons
+                    fullCloseButton.setEnabled(false);
+                    halfOpenButton.setEnabled(false);
+                    fullOpenButton.setEnabled(false);
+
+                    servoGateReference.child("Mode").setValue("Automatic");
+                } else {
+
+                    servoGateReference.child("ManualGate").setValue("");
+                    // Manual mode - Enable manual buttons
+                    fullCloseButton.setEnabled(true);
+                    halfOpenButton.setEnabled(true);
+                    fullOpenButton.setEnabled(true);
+
+                    servoGateReference.child("Mode").setValue("Manual");
+                }
+            }
+        });
+
+// OnClickListener for Full Close button
+        fullCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                servoGateReference.child("ManualGate").setValue("Full Close");
+                fullCloseButton.setEnabled(false);
+                halfOpenButton.setEnabled(true);
+                fullOpenButton.setEnabled(true);
+            }
+        });
+
+// OnClickListener for Half Open button
+        halfOpenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                servoGateReference.child("ManualGate").setValue("Half Open");
+                halfOpenButton.setEnabled(false);
+                fullCloseButton.setEnabled(true);
+                fullOpenButton.setEnabled(true);
+            }
+        });
+
+// OnClickListener for Full Open button
+        fullOpenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                servoGateReference.child("ManualGate").setValue("Full Open");
+                fullOpenButton.setEnabled(false);
+                fullCloseButton.setEnabled(true);
+                halfOpenButton.setEnabled(true);
+            }
+        });
+
+
 
 
 
@@ -312,8 +477,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     //Handles back press
     private final Runnable mRunnable = new Runnable() {
         @Override
@@ -348,5 +511,7 @@ public class MainActivity extends AppCompatActivity {
 
         mHandler.postDelayed(mRunnable, 2000);
     }
+
+
 
 }
