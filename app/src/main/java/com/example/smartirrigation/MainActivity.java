@@ -238,7 +238,14 @@ public class MainActivity extends AppCompatActivity {
                 // Define the value to be stored in the Firebase database based on the switch state
                 String textState = isChecked ? "Text_On" : "Text_Off";
 
-                // Update the "TextMessaging" node in the Firebase Realtime Database
+                // Check the state of the text switch
+                if (textState.equals("Text_On")) {
+                    water_switch.setEnabled(false);
+                } else {
+                    water_switch.setEnabled(true);
+                }
+
+                    // Update the "TextMessaging" node in the Firebase Realtime Database
                 textMessagingReference.setValue(textState)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

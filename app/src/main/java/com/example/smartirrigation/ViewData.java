@@ -136,7 +136,7 @@ public class ViewData extends AppCompatActivity {
             public void onClick(View v) {
                 String newPhoneNum = updatePhoneNumber.getText().toString();
                 updateData(id, newPhoneNum);
-                Toast.makeText(ViewData.this, "Record Updated", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ViewData.this, "Record Updated", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }
         });
@@ -175,14 +175,21 @@ public class ViewData extends AppCompatActivity {
     }
 
     private void updateData(String id, String phoneNumber) {
+        if (phoneNumber.length() != 11 || !phoneNumber.startsWith("09")) {
+            showToast("Invalid phone number. Please enter a valid 11-digit number.  E.g. '09123456789'.");
+            return;
+        } else {
+            showToast("Record Updated");
+        }
         // Create a reference to the database
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Text").child("MobileNumbers").child(id);
+
 
         // Update the phone number
         dbRef.setValue(phoneNumber).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                showToast("Record Updated");
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
